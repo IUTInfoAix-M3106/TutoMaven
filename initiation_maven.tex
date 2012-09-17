@@ -1,0 +1,488 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[x11names,table]{xcolor}
+\usepackage[french]{babel}
+\usepackage{wasysym}
+\usepackage{natbib}
+% Si l'on veut produire une version PDF avec distiller ou pdflatex:
+\usepackage[pageanchor=false,colorlinks,plainpages=false]{hyperref}
+\usepackage{url}
+
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+\graphicspath{{Images/}}
+
+\usepackage{time}
+
+\usepackage{listings}
+\usepackage{textcomp}
+ 
+\definecolor{gray}{gray}{0.5} 
+\lstnewenvironment{code_xml}[1][]{ 
+    \lstset
+      { 
+        language=XML,
+        inputencoding=utf8,
+        basicstyle=\ttfamily\footnotesize, 
+        showspaces=false,
+        showstringspaces=false,
+        showtabs=false,
+        frame=single,
+        morecomment=[s]{<!--}{-->},
+        commentstyle=\itshape\color{gray},
+        stringstyle=\color{blue},
+        keywordstyle=\color{red},
+        markfirstintag=true,
+        upquote=true
+      } 
+}{}
+
+\lstnewenvironment{code_shell}[1][]{ 
+    \lstset
+      { 
+        language=sh,
+        inputencoding=utf8,
+        basicstyle=\ttfamily\normalsize, 
+        showspaces=false,
+        showstringspaces=false,
+        showtabs=false,
+        frame=single,
+        commentstyle=\itshape\color{gray},
+        stringstyle=\color{blue},
+        keywordstyle=\color{red},
+        markfirstintag=true,
+        upquote=true
+      } 
+}{}
+
+
+\usepackage{todonotes}
+\usepackage{tikz-er2}
+\usepackage{pgf-umlcd}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{backgrounds}
+\tikzstyle{every entity} = [top color=white, 
+                            bottom color=blue!30, 
+                            draw=blue!50!black!100, 
+                            drop shadow]
+\tikzstyle{every weak entity} = [drop shadow={shadow xshift=.7ex, shadow yshift=-.7ex}]
+\tikzstyle{every attribute} = [top color=white, 
+                               bottom color=yellow!20, 
+                               draw=yellow, 
+                               node distance=1cm, 
+                               drop shadow]
+\tikzstyle{every relationship} = [top color=white, 
+                                  bottom color=yellow!20,  
+                                  draw=yellow, 
+                                  drop shadow]
+\tikzstyle{every isa} = [draw=blue!50!black!100]
+
+\usepackage[]{subfig}
+%\renewcommand{\thesubfigure}{Figure~\thefigure.\arabic{subfigure}}
+%\captionsetup[subfigure]{labelformat=simple,labelsep=colon, listofformat=subsimple}
+%\captionsetup{lofdepth=2}
+%\makeatletter
+%\renewcommand{\p@subfigure}{}
+%\makeatother
+
+\usepackage{geometry}
+\geometry{%
+a4paper,
+body={160mm,250mm},
+left=25mm,top=20mm,
+headheight=7mm,headsep=4mm,
+marginparsep=3mm,
+marginparwidth=27mm}
+
+\usepackage{changepage}
+\usepackage{placeins}
+
+\usepackage{rotating}
+
+\newenvironment{agrandirmarges}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{0pt plus 1pt}%
+\checkoddpage%
+\ifoddpage
+\setlength{\leftmargin}{-#1}\setlength{\rightmargin}{-#2}
+\else
+\setlength{\leftmargin}{-#2}\setlength{\rightmargin}{-#1}
+\fi}\item }%
+{\end{list}}
+
+\newcounter{compteurQuestion}
+\setcounter{compteurQuestion}{0}
+\newcommand{\Question}{\paragraph*{Question~\thecompteurQuestion~:}\addtocounter{compteurQuestion}{1}}
+
+\date{}
+\begin{document}
+\lstset{
+         breaklines=true,
+         %frame=ltrb,
+         framesep=5pt,
+         %samepage=true,
+         tabsize=4,
+         basicstyle=\normalsize,
+         frameround=ftft,
+         keywordstyle=\ttfamily\color{SeaGreen4},
+         identifierstyle=\ttfamily\bfseries\color{RoyalBlue4},
+         commentstyle=\color{RoyalBlue3},
+         stringstyle=\ttfamily,
+         showstringspaces=false
+}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+\newlength{\niveauZero}
+\newlength{\niveauUn}
+\newlength{\niveauDeux}
+\newlength{\niveauTrois}
+\newlength{\niveauQuatre}
+\newlength{\niveauCinq}
+
+\newlength{\colonneZero}
+\newlength{\colonneUn}
+\newlength{\colonneDeux}
+\newlength{\colonneTrois}
+\newlength{\colonneQuatre}
+\newlength{\colonneCinq}
+
+
+{\centering
+    \mbox{
+      \makebox[15cm][l]{
+      \begin{minipage}{15cm}
+        \begin{center}
+          {\Huge Introduction à Maven} \\[1cm]
+          {\Large Sébastien \textsc{Nedjar} et Fabien \textsc{Pesci}}
+        \end{center}
+      \end{minipage}
+      }
+    }
+}\\[0.4cm]
+\section{Introduction}
+L'objectif de ce document est de vous présenter rapidement l'outil de référence pour la gestion et l'automatisation 
+de production des projets logiciels Java : Maven. Au premier abord, Maven semble avoir le même objectif que \texttt{Make} 
+sous Unix : la production d'un logiciel à partir de ses sources. Contrairement à ses prédécesseurs, il a une approche 
+moins descriptive de la construction d'un logiciel. Parmi les tâches qu'il aide à automatiser il y a :
+
+\begin{itemize}
+  \item Constructions
+  \item Exécution des tests
+  \item Documentation
+  \item Génération de rapport
+  \item Gestion des dépendances
+  \item Gestion de versions
+  \item Releases
+  \item Distribution
+\end{itemize}
+
+Au lieu d'écrire des scripts particuliers pour chaque projet, Maven 
+essaye de proposer une abstraction standard du cycle de vie d'un logiciel. Sur ce cycle viennent se greffer les ajouts et 
+les particularités propre à chaque projet. Ainsi la configuration d'un nouveau projet sera facile et c'est au fur et à 
+mesure de la complexification des besoins que la configuration devra être adaptée. 
+
+Pour arriver à cet objectif de simplicité sans perte de flexibilité, Maven utilise la philosophie "Convention plutôt que 
+configuration". L'idée est de faire décroître le nombre de décisions qu'un développeur doit prendre en lui proposant une 
+convention adaptée au cas d'utilisation le plus classique qu'il pourra amender pour correspondre à ce qu'il veut faire.
+Ainsi la configuration n'est plus la norme mais l'exception.
+
+\subsection{Convention Maven}
+L'un des grands intérêts de Maven est qu'il encourage la standardisation des pratiques grâce aux conventions qu'il propose.
+La structure des répertoires d'un projet est la partie la plus visible de cet effort d'uniformisation. Les conventions 
+étant relativement simples et logiques, il y a peu de raison de ne pas les respecter. L'immense avantage est 
+que tous les projets Maven tendant à avoir la même structure, n'importe quel développeur pourra facilement retrouver 
+ses marques dans des projets différents. Voici une liste non-exhaustive des répertoires standard d'un projet Maven :
+
+\begin{itemize}
+  \item\texttt{src} : les sources du projet.
+  \item\texttt{src/main} : code source et fichiers source principaux.
+  \item\texttt{src/main/java} : code source java.
+  \item\texttt{src/main/resources} : fichiers de ressources (images, fichiers annexes etc.).
+  \item\texttt{src/main/webapp} : webapp du projet.
+  \item\texttt{src/main/filters} : Les filtres de ressources, sous forme de fichier de propriétés, qui peuvent être 
+  utilisés pour définir des variables connues uniquement au moment du build.
+  \item\texttt{src/test} : fichiers de test.
+  \item\texttt{src/test/java} : code source java de test.
+  \item\texttt{src/test/resources} : fichiers de ressources de test.
+  \item\texttt{src/test/filters} : Les filtres nécessaires aux tests unitaires, qui ne seront pas déployés
+  \item\texttt{src/site} : informations sur le projet et/ou les rapports générés suite aux traitements effectués.
+  \item\texttt{target} : fichiers résultat, les binaires (du code et des tests), les \texttt{jar} générés et les 
+  résultats des tests.
+\end{itemize}
+
+
+\subsection{Project Object Model (POM)}
+Le modèle objet projet ou POM est le fichier central pour la configuration d'un projet avec Maven. Il contient une description 
+détaillée du projet, avec en particulier des informations concernant le versionnage et la gestion des configurations, 
+les dépendances, les ressources de l'application, les tests, les membres de l'équipe, la structure ...
+Ce POM se matérialise par un fichier pom.xml à la racine du projet. Voici un exemple simple de POM :
+\begin{code_xml}
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.mycompany.app</groupId>
+  <artifactId>my-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>my-app</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>6</maven.compiler.source>
+    <maven.compiler.target>6</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
+\end{code_xml}
+Bien que très simple, ce POM permet de voir les éléments clés dans la définition d'un projet Maven. Chaque élément est 
+décrit par une balise XML reconnaissable par l'usage de chevrons (\texttt{< >}) comme en HTML. 
+Les principales balises sont les suivantes :
+
+\begin{description}
+  \item[project] Cette balise est la balise de premier niveau dans tous les projets Maven.
+  \item[modelVersion] Cette balise permettent de configurer la version de la syntaxe du POM (à ignorer pour le moment). 
+  La version du POM change que très rarement mais il faut impérativement préciser la version pour que les futures versions
+  de Maven puissent continuer à gérer correctement le projet.
+  \item[groupId] Cette balise est un identifiant unique pour l'organisation qui a créé le projet. Le \texttt{groupId} est l'un 
+  des identifiants clés d'un projet, il est généralement construit à partir du nom de domaine de l'organisation 
+  responsable du projet. Par exemple \texttt{org.apache.maven.plugins} est le \texttt{groupId} de tous les plug-ins Maven.
+  \item[artifactId] Cette balise indique le nom de base unique pour l'artefact principal généré par ce projet. 
+  Typiquement en Java cet artefact est un fichier \texttt{jar}. Le nom de ce fichier aura la forme suivante 
+  \texttt{<artifactId>-<version>.<extension>} (\texttt{myapp-1.0-SNAPSHOT.jar} pour le projet d'exemple).
+  \item[packaging] Indique quel est le type d'archive utilisé pour l'artefact principale (\texttt{jar},\texttt{war},\texttt{ear},...). 
+  Par défaut Maven génère un \texttt{jar}, il est donc inutile de préciser cette balise pour la majorité des projets.
+  \item[version] Cet élément indique la version de l'artefact généré par le projet. Permet d'aider à Maven d'aider le 
+  développeur à gérer correctement les versions d'un même projet ainsi que les dépendances.
+  \item[name] Indique le nom complet du projet. Il est parfois utile dans la documentation générée grâce à Maven.
+  \item[url] Cette balise indique où est situé le site principal du projet. Comme la précédente cette information sert 
+  surtout pour les documents générés par l'outil.
+  \item[description] Cette balise donne une description sommaire du projet. Encore une fois surtout pour la documentation.
+\end{description}
+
+\subsection{Gestion des dépendances}
+L'un des premiers bénéfices de Maven que constate le développeur habitué à \texttt{Make} ou \texttt{Ant} est la gestion 
+simplifiée des dépendances transitives. En effet, Maven étant fortement basé sur le réseau, il est capable de récupérer 
+automatiquement les \texttt{jar} dont votre projet dépend ainsi que leurs dépendances. On pourrait comparer cette 
+fonctionnalité de Maven avec les services rendus par un outil comme \texttt{apt-get} pour la gestion des paquets sous 
+Debian. 
+
+Pour ajouter une dépendance à un projet, il suffit de rajouter dans le POM la balise \texttt{dependency} avec les 
+bonnes propriétés. À la prochaine compilation les \texttt{jar} seront automatiquement téléchargés à partir des dépôts.
+Pour trouver les informations sur les \texttt{jar} disponibles dans les dépôts, il existe plusieurs moteurs de recherche 
+(par exemple \url{http://search.maven.org/}). L'avantage d'utiliser ces moteurs est qu'ils donnent directement les 
+balises \texttt{dependency} à copier dans la section \texttt{dependencies} du fichier \texttt{pom.xml}.
+
+\subsection{Cycle de vie}
+Par défaut Maven propose une abstraction du cycle de vie standard de la construction d'un projet (appelée en anglais Build Lifecycle). 
+Chaque phase de ce cycle de vie est appelée un but (Goal en anglais). Ces étapes se déroulent dans un ordre déterminée et 
+une étape ne peut démarrer uniquement si et seulement si les précédentes se sont bien déroulées. Le cycle par défaut est constitué 
+des étapes de construction suivantes :
+\begin{description}
+  \item[validate] - Valide que le projet est correct et que toutes les informations nécessaires sont renseignées.
+  \item[compile] - Compile le code source du projet.
+  \item[test] - Teste le code compilé en utilisant un framework de test unitaire test.
+  \item[package] - Prend le code compilé et l'empaquette dans une forme distribuable, typiquement un \texttt{jar}.
+  \item[integration-test] - Exécute et déploie si nécessaire le package dans un environnement où les tests d'intégration pourront être lancés.
+  \item[verify] - Lance tous les outils de validation qui  vérifient que le package satisfait les critères de qualité souhaités.
+  \item[install] - Installe le package dans le dépôt local, pour être utilisé localement comme dépendance par un autre projet.
+  \item[deploy] - Fait dans l'environnement d'intégration où chez le client, elle copie le package terminé dans un dépôt distant 
+  pour être partagé avec d'autres développeurs ou d'autres projets.
+\end{description}
+Pour lancer toutes les phases de ce cycle de vie, il suffit d'appeler la commande suivante : 
+\begin{code_shell}
+mvn deploy
+\end{code_shell}
+
+Comme l'exécution d'une phase lance aussi toutes les phases qui précèdent, la commande suivante permet d'exécuter le cycle 
+de vie jusqu'à la création du fichier \texttt{jar}.
+\begin{code_shell}
+mvn package
+\end{code_shell}
+
+En plus du cycle par défaut, Maven propose deux autres cycles de vie : \texttt{site} et \texttt{clean}. Le premier est 
+fait pour générer la documentation en ligne et le second permet de nettoyer un projet de tout ce qui a été généré par les 
+\emph{"builds"} précédents.
+
+\subsection{Ressources}
+Maven sépare le code source des ressources de l'application. Ces ressources sont par exemple les fichiers de configuration, 
+des images ou tout autre fichier utilisé par le code de l'application. Par défaut ces fichiers doivent se situer dans le 
+répertoire \texttt{src/main/resources}. Maven fait en sorte que ces fichiers se retrouvent au bon endroit lors de la 
+construction de l'archive. Par exemple, pour une application utilisant JPA, c'est dans ce dossier que devra se situer 
+le fichier \texttt{META-INF/persistence.xml}.
+
+\subsection{Filtre}
+Les ressources n'ont pas pour unique intérêt de séparer clairement les fichiers de configuration pour améliorer 
+l'organisation de nos projet. Même si ce n'est pas une fonctionnalité activée par défaut, le principal atout est 
+de pouvoir réaliser du filtrage sur ces fichiers. 
+
+Filtrer les fichiers correspond à remplacer à l'intérieur de tous les fichiers et à chaque compilation tous les 
+\texttt{\$\{properties\}} par une valeur définie par le système ou le développeur. Pour activer le filtrage sur un 
+répertoire de ressources, il faut ajouter au POM le code suivant : 
+\begin{code_xml}
+<build>
+  <resources>
+    <resource>
+      <directory>src/main/resources</directory>
+      <filtering>true</filtering>
+    </resource>
+  </resources>
+</build>
+\end{code_xml}
+
+Maven met à disposition un certain nombre de propriétés comme par exemple \texttt{\$\{pom.name\}} qui contient le nom 
+du projet ou \texttt{\$\{pom.version\}} qui correspond à la version. Pour définir des nouvelles propriétés le développeur
+a deux solutions. La première, la plus simple, est d'ajouter les propriétés à la ligne de commande d'exécution de Maven.
+Par exemple si l'on souhaite créer une propriété \texttt{\$\{bd.motDePasse\}} contenant le mot de passe de connexion à 
+la base de données de notre machine de développement, il suffit d'exécuter Maven de la manière suivante :
+\begin{code_shell}
+mvn package "-Dbd.motDePasse=monmdptoutnul"
+\end{code_shell}
+La seconde solution pour définir des propriétés est de passer par un fichier dédié (dit fichier \emph{properties}) qui 
+sera utilisé pour le filtrage. Cette méthode est à préférer quand on souhaite définir un plus grand nombre de propriétés.
+Si l'on utilise un système de gestion de version, il faudra veiller à séparer les filtres communs à tous les développeurs 
+des filtres individuels (comme le mot de passe de la BD de dev). Par convention les fichiers \emph{properties} sont situés dans le répertoire 
+\texttt{src/main/filters}. Pour configurer ces fichiers, il faut ajouter au POM le code suivant : 
+\begin{code_xml}
+<build>
+  <filters>
+    <filter>src/main/filters/filter.properties</filter>
+  </filters>
+</build>
+\end{code_xml}
+Le fichier \texttt{filter.properties} est un fichier "clé=valeur" classique. Pour notre exemple d'application il 
+pourrait ressembler à cela : 
+\begin{code_xml}
+bd.url=jdbc:oracle:thin:nedjar/nedjar@//allegro.iut.univ-aix.fr:1522/orcl.iut.univ-aix.fr
+bd.user=onyann
+bd.password=monmdptoutnul
+bd.driver=com.mysql.jdbc.Driver
+\end{code_xml}
+Il faut noter que si une propriété est présente dans un fichier \emph{properties} et 
+qu'elle est aussi définie dans la ligne de commande, alors c'est cette dernière qui sera utilisée. Ainsi même si un filtre
+est par défaut commun à tous il pourra être redéfini localement par un développeur pour faire des essais.
+
+Avec nos filtres d'exemple, le fichier \texttt{src/main/resources/META-INF/persistence.xml} ressemblerait à ceci :
+\begin{code_xml}
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0" 
+             xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="maPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>fr.univaix.iut.Cas2.Residant</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="${bd.url}"/>
+      <property name="javax.persistence.jdbc.user" value="${bd.user}"/>
+      <property name="javax.persistence.jdbc.password" value="${bd.password}"/>
+      <property name="javax.persistence.jdbc.driver" value="${bd.driver}"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="javax.persistence.level" value="SEVERE"/>
+    </properties>
+  </persistence-unit>
+</persistence>
+\end{code_xml}
+
+\section{Mise en place de l'environnement de travail}
+\subsection{Installation}
+Sur les machines du département la version 2.2.1 de Maven est déjà installée, donc pour cette étape il n'y a rien à faire.
+Si vous utilisez votre propre machine, vous pouvez soit installer la version présente dans les dépôts de votre 
+distribution\footnote{Un développeur n'ayant pas un Unix sur sa machine ne peut pas être raisonnablement considéré comme un vrai développeur.}
+où vous pouvez aussi l'installer manuellement en suivant les instructions de la page officielle : \url{http://maven.apache.org/download.html}.
+
+La version d'eclipse présente sur les machines du département étant très chargée en module dont un certain nombre n'est jamais utilisé, 
+nous allons développer avec une version "propre" et à jour. Pour la récupérer, allez sur la page 
+\url{http://www.eclipse.org/downloads/} puis téléchargez "Eclipse IDE for Java Developers" version linux 32bit. Si vous 
+êtes à l'IUT, vous pouvez le télécharger directement à l'adresse suivante : 
+\url{http://allegro.iut.univ-aix.fr/~nedjar/eclipse-java-indigo-SR1-linux-gtk.tar.gz}. Cette version contient par défaut 
+les plugin Maven, Git et Junit. Elle vous simplifiera donc bien la vie pour vos projets à réaliser en Java d'ici la fin du S4.
+
+Pour éviter d'utiliser plusieurs versions de Maven pour le même projet, il faut aller dans le menu \texttt{Window->Preferences} 
+puis dans la partie \texttt{Maven->Installation}. Une fois dans cette fenêtre, il faudra cliquer sur le bouton \texttt{Add} 
+et indiquer le répertoire \texttt{/usr/share/maven2/}.
+
+
+\subsection{Création d'un premier projet}
+Avant d'utiliser Maven pour nos projets Java de ProgBD et de Cas2, nous allons voir comment créer un simple projet 
+d'exemple (le helloworld de Maven). Pour créer ce projet, nous allons faire appel au mécanisme d'archétype. Un archétype 
+est défini comme un modèle réutilisable. Dans Maven, un archétype est un template (une trame en français) d'un projet 
+qui est combiné avec des informations entrées par l'utilisateur pour produire un projet Maven qui a été assemblé pour 
+les besoins spécifiques de l'utilisateur. Nous allons voir comment le mécanisme d'archétype fonctionne, pour en savoir 
+plus sur les archétype, vous pouvez consulter cette page de la documentation officielle : 
+\url{http://maven.apache.org/guides/introduction/introduction-to-archetypes.html}.
+
+\begin{enumerate}
+  \item Comme nous voulons que notre projet Maven puisse être importé par Eclipse, nous commençons par nous déplacer dans le workspace.
+  \begin{code_shell}
+cd ~/workspace
+  \end{code_shell}
+  Pour éviter de devoir réimporter salement vos projet à chaque début de TP, il est intéressant de mettre votre workspace 
+  sur une clef USB et de choisir au démarrage d'Eclipse ce workspace là. En plus vous pourrez ainsi travailler de la même 
+  façon que ce soit à l'IUT ou chez vous. Et vous n'oublierez plus votre travail dans votre workspace local.
+  \item Ensuite on créé notre projet avec la ligne de commande suivante :
+  \begin{code_shell}
+mvn archetype:generate -DinteractiveMode=false \
+-DarchetypeArtifactId=maven-archetype-quickstart \
+-DgroupId=com.mycompany.app -DartifactId=my-app 
+  \end{code_shell}
+  Les paramètres \texttt{-DgroupId} et \texttt{-DartifactId} permettent de définir convenablement votre projet (voir le paragraphe sur le POM).
+  
+  \item Le projet est situé dans un dossier ayant même nom que l'\texttt{artifactId}, c'est à dire dans notre exemple "my-app". 
+  Ce dossier a la structure suivante :
+  \begin{code_shell}
+my-app/
+|-- pom.xml
+`-- src
+    |-- main
+    |   `-- java
+    |       `-- com
+    |           `-- mycompany
+    |               `-- app
+    |                   `-- App.java
+    `-- test
+        `-- java
+            `-- com
+                `-- mycompany
+                    `-- app
+                        `-- AppTest.java
+  \end{code_shell}
+  \item La compilation de ce projet se fait en exécutant les commandes suivantes\footnote{Attention généralement le 
+  premier lancement de Maven est très long car il va récupérer tout ce dont il a besoin par le réseau} :
+  \begin{code_shell}
+cd my-app
+mvn package
+  \end{code_shell}
+  \item Pour rendre le projet compatible avec Eclipse il faut exécuter la commande suivante : 
+  \begin{code_shell}
+mvn eclipse:eclipse
+  \end{code_shell}
+  Une fois cette commande exécutée, il suffit d'importer le projet à partir d'Eclipse pour pouvoir commencer à travailler.
+\end{enumerate}
+\end{document}
+
