@@ -176,8 +176,10 @@ marginparwidth=27mm}
 \section{Introduction}
 L'objectif de ce document est de vous présenter rapidement l'outil de référence pour la gestion et l'automatisation 
 de production des projets logiciels Java : Maven. Au premier abord, Maven semble avoir le même objectif que \texttt{Make} 
-sous Unix : la production d'un logiciel à partir de ses sources. Contrairement à ses prédécesseurs, il a une approche 
-moins descriptive de la construction d'un logiciel. Parmi les tâches qu'il aide à automatiser il y a :
+sous Unix : la production d'un logiciel à partir de ses sources. Maven est bien plus puissant que cela, par ses possibilités 
+avancés, il est souvent utiliser comme une brique de base pour l'intégration continue et les forges 
+logicielles\footnote{\url{http://fr.wikipedia.org/wiki/Forge_\%28informatique\%29}}. Contrairement à ses prédécesseurs, 
+il a une approche moins descriptive de la construction d'un logiciel. Parmi les tâches qu'il aide à automatiser il y a :
 
 \begin{itemize}
   \item Constructions
@@ -226,8 +228,8 @@ ses marques dans des projets différents. Voici une liste non-exhaustive des ré
 
 
 \subsection{Project Object Model (POM)}
-Le modèle objet projet ou POM est le fichier central pour la configuration d'un projet avec Maven. Il contient une description 
-détaillée du projet, avec en particulier des informations concernant le versionnage et la gestion des configurations, 
+Le modèle objet projet ou POM est le fichier central pour la configuration d'un projet avec Maven. Il contient une 
+description détaillée du projet, avec en particulier des informations concernant le versionnage et la gestion des configurations, 
 les dépendances, les ressources de l'application, les tests, les membres de l'équipe, la structure ...
 Ce POM se matérialise par un fichier pom.xml à la racine du projet. Voici un exemple simple de POM :
 \begin{code_xml}
@@ -242,13 +244,14 @@ Ce POM se matérialise par un fichier pom.xml à la racine du projet. Voici un e
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>my-app</name>
+  <name>MSBAI</name>
+  <description>Ma Super Belle Application Inutile</description>
   <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>6</maven.compiler.source>
-    <maven.compiler.target>6</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -263,7 +266,7 @@ Ce POM se matérialise par un fichier pom.xml à la racine du projet. Voici un e
 \end{code_xml}
 Bien que très simple, ce POM permet de voir les éléments clés dans la définition d'un projet Maven. Chaque élément est 
 décrit par une balise XML reconnaissable par l'usage de chevrons (\texttt{< >}) comme en HTML. 
-Les principales balises sont les suivantes :
+Les balises indispensables sont les suivantes :
 
 \begin{description}
   \item[project] Cette balise est la balise de premier niveau dans tous les projets Maven.
@@ -276,10 +279,10 @@ Les principales balises sont les suivantes :
   \item[artifactId] Cette balise indique le nom de base unique pour l'artefact principal généré par ce projet. 
   Typiquement en Java cet artefact est un fichier \texttt{jar}. Le nom de ce fichier aura la forme suivante 
   \texttt{<artifactId>-<version>.<extension>} (\texttt{myapp-1.0-SNAPSHOT.jar} pour le projet d'exemple).
-  \item[packaging] Indique quel est le type d'archive utilisé pour l'artefact principale (\texttt{jar},\texttt{war},\texttt{ear},...). 
-  Par défaut Maven génère un \texttt{jar}, il est donc inutile de préciser cette balise pour la majorité des projets.
   \item[version] Cet élément indique la version de l'artefact généré par le projet. Permet d'aider à Maven d'aider le 
   développeur à gérer correctement les versions d'un même projet ainsi que les dépendances.
+  \item[packaging] Indique quel est le type d'archive utilisé pour l'artefact principale (\texttt{jar},\texttt{war},\texttt{ear},...). 
+  Par défaut Maven génère un \texttt{jar}, il est donc inutile de préciser cette balise pour la majorité des projets.
   \item[name] Indique le nom complet du projet. Il est parfois utile dans la documentation générée grâce à Maven.
   \item[url] Cette balise indique où est situé le site principal du projet. Comme la précédente cette information sert 
   surtout pour les documents générés par l'outil.
@@ -291,23 +294,29 @@ L'un des premiers bénéfices de Maven que constate le développeur habitué à 
 simplifiée des dépendances transitives. En effet, Maven étant fortement basé sur le réseau, il est capable de récupérer 
 automatiquement les \texttt{jar} dont votre projet dépend ainsi que leurs dépendances. On pourrait comparer cette 
 fonctionnalité de Maven avec les services rendus par un outil comme \texttt{apt-get} pour la gestion des paquets sous 
-Debian. 
+Debian. Comme pour ces outils de gestion d'installation de logiciels, l'endroit ou sont regroupés les paquets s'appelle 
+un dépôt (ou repository). 
 
 Pour ajouter une dépendance à un projet, il suffit de rajouter dans le POM la balise \texttt{dependency} avec les 
-bonnes propriétés. À la prochaine compilation les \texttt{jar} seront automatiquement téléchargés à partir des dépôts.
-Pour trouver les informations sur les \texttt{jar} disponibles dans les dépôts, il existe plusieurs moteurs de recherche 
+bonnes propriétés. Cette balise est imbriquée dans une balise \texttt{dependencies} qui regroupe toute les dépendances du projet.
+Une fois le fichier \texttt{pom.xml} enregistré, à la compilation suivante, les \texttt{jar} seront automatiquement téléchargés 
+à partir des dépôts. Pour trouver les informations sur les \texttt{jar} disponibles dans les dépôts, il existe plusieurs moteurs de recherche 
 (par exemple \url{http://search.maven.org/}). L'avantage d'utiliser ces moteurs est qu'ils donnent directement les 
 balises \texttt{dependency} à copier dans la section \texttt{dependencies} du fichier \texttt{pom.xml}.
+
+Par défaut, toute installation de Maven connaît un seul dépôt : \emph{"Central"}. Ce dépôt contient la plupart des bibliothèques 
+Java classiques. Parfois, pour obtenir une version récente ou pour obtenir une bibliothèque exotique, il faudra rajouter 
+des dépôts dans le POM. Cela peut être fait par l'ajout d'une balise \texttt{repository} placée dans la section \texttt{repositories}.
 
 \subsection{Cycle de vie}
 Par défaut Maven propose une abstraction du cycle de vie standard de la construction d'un projet (appelée en anglais Build Lifecycle). 
 Chaque phase de ce cycle de vie est appelée un but (Goal en anglais). Ces étapes se déroulent dans un ordre déterminée et 
-une étape ne peut démarrer uniquement si et seulement si les précédentes se sont bien déroulées. Le cycle par défaut est constitué 
+une étape peut démarrer uniquement si et seulement si les précédentes se sont bien déroulées. Le cycle par défaut est constitué 
 des étapes de construction suivantes :
 \begin{description}
   \item[validate] - Valide que le projet est correct et que toutes les informations nécessaires sont renseignées.
   \item[compile] - Compile le code source du projet.
-  \item[test] - Teste le code compilé en utilisant un framework de test unitaire test.
+  \item[test] - Teste le code compilé en utilisant un framework de test unitaire.
   \item[package] - Prend le code compilé et l'empaquette dans une forme distribuable, typiquement un \texttt{jar}.
   \item[integration-test] - Exécute et déploie si nécessaire le package dans un environnement où les tests d'intégration pourront être lancés.
   \item[verify] - Lance tous les outils de validation qui  vérifient que le package satisfait les critères de qualité souhaités.
@@ -326,7 +335,7 @@ de vie jusqu'à la création du fichier \texttt{jar}.
 mvn package
 \end{code_shell}
 
-En plus du cycle par défaut, Maven propose deux autres cycles de vie : \texttt{site} et \texttt{clean}. Le premier est 
+En plus du cycle par défaut, Maven propose deux autres étapes : \texttt{site} et \texttt{clean}. Le premier est 
 fait pour générer la documentation en ligne et le second permet de nettoyer un projet de tout ce qui a été généré par les 
 \emph{"builds"} précédents.
 
@@ -343,7 +352,8 @@ l'organisation de nos projet. Même si ce n'est pas une fonctionnalité activée
 de pouvoir réaliser du filtrage sur ces fichiers. 
 
 Filtrer les fichiers correspond à remplacer à l'intérieur de tous les fichiers et à chaque compilation tous les 
-\texttt{\$\{properties\}} par une valeur définie par le système ou le développeur. Pour activer le filtrage sur un 
+\texttt{\$\{properties\}} par une valeur définie par le système ou le développeur. Ce mécanisme permet donc de paramétrer 
+le projet grâce à des propriétés qui seront remplacées par de vrais valeurs à l'exécution. Pour activer le filtrage sur un 
 répertoire de ressources, il faut ajouter au POM le code suivant : 
 \begin{code_xml}
 <build>
@@ -396,7 +406,6 @@ Avec nos filtres d'exemple, le fichier \texttt{src/main/resources/META-INF/persi
              xmlns="http://java.sun.com/xml/ns/persistence">
   <persistence-unit name="maPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>fr.univaix.iut.Cas2.Residant</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="${bd.url}"/>
       <property name="javax.persistence.jdbc.user" value="${bd.user}"/>
@@ -416,25 +425,22 @@ Si vous utilisez votre propre machine, vous pouvez soit installer la version pr�
 distribution\footnote{Un développeur n'ayant pas un Unix sur sa machine ne peut pas être raisonnablement considéré comme un vrai développeur.}
 où vous pouvez aussi l'installer manuellement en suivant les instructions de la page officielle : \url{http://maven.apache.org/download.html}.
 
-La version d'eclipse présente sur les machines du département étant très chargée en module dont un certain nombre n'est jamais utilisé, 
-nous allons développer avec une version "propre" et à jour. Pour la récupérer, allez sur la page 
-\url{http://www.eclipse.org/downloads/} puis téléchargez "Eclipse IDE for Java Developers" version linux 32bit. Si vous 
-êtes à l'IUT, vous pouvez le télécharger directement à l'adresse suivante : 
-\url{http://allegro.iut.univ-aix.fr/~nedjar/eclipse-java-indigo-SR1-linux-gtk.tar.gz}. Cette version contient par défaut 
-les plugin Maven, Git et Junit. Elle vous simplifiera donc bien la vie pour vos projets à réaliser en Java d'ici la fin du S4.
+La version d'eclipse présente sur les machines du département est la dernière disponible. Pour la récupérer pour chez vous, 
+allez sur la page \url{http://www.eclipse.org/downloads/} puis téléchargez "Eclipse IDE for Java Developers" version linux. 
+Cette version contient par défaut les plugin Maven, Git et Junit. Elle vous simplifiera donc bien la vie pour vos projets 
+à réaliser en Java d'ici la fin du S4.
 
 Pour éviter d'utiliser plusieurs versions de Maven pour le même projet, il faut aller dans le menu \texttt{Window->Preferences} 
 puis dans la partie \texttt{Maven->Installation}. Une fois dans cette fenêtre, il faudra cliquer sur le bouton \texttt{Add} 
 et indiquer le répertoire \texttt{/usr/share/maven2/}.
 
-
 \subsection{Création d'un premier projet}
-Avant d'utiliser Maven pour nos projets Java de ProgBD et de Cas2, nous allons voir comment créer un simple projet 
+Avant d'utiliser Maven pour nos projets Java, nous allons voir comment créer un simple projet 
 d'exemple (le helloworld de Maven). Pour créer ce projet, nous allons faire appel au mécanisme d'archétype. Un archétype 
 est défini comme un modèle réutilisable. Dans Maven, un archétype est un template (une trame en français) d'un projet 
 qui est combiné avec des informations entrées par l'utilisateur pour produire un projet Maven qui a été assemblé pour 
 les besoins spécifiques de l'utilisateur. Nous allons voir comment le mécanisme d'archétype fonctionne, pour en savoir 
-plus sur les archétype, vous pouvez consulter cette page de la documentation officielle : 
+plus sur les archétypes, vous pouvez consulter cette page de la documentation officielle : 
 \url{http://maven.apache.org/guides/introduction/introduction-to-archetypes.html}.
 
 \begin{enumerate}
@@ -442,9 +448,9 @@ plus sur les archétype, vous pouvez consulter cette page de la documentation of
   \begin{code_shell}
 cd ~/workspace
   \end{code_shell}
-  Pour éviter de devoir réimporter salement vos projet à chaque début de TP, il est intéressant de mettre votre workspace 
+  Pour éviter de devoir réimporter salement vos projet à chaque début de TP, il est plus qu'intéressant de mettre votre workspace 
   sur une clef USB et de choisir au démarrage d'Eclipse ce workspace là. En plus vous pourrez ainsi travailler de la même 
-  façon que ce soit à l'IUT ou chez vous. Et vous n'oublierez plus votre travail dans votre workspace local.
+  façon que ce soit à l'IUT ou chez vous.
   \item Ensuite on créé notre projet avec la ligne de commande suivante :
   \begin{code_shell}
 mvn archetype:generate -DinteractiveMode=false \
@@ -484,5 +490,8 @@ mvn eclipse:eclipse
   \end{code_shell}
   Une fois cette commande exécutée, il suffit d'importer le projet à partir d'Eclipse pour pouvoir commencer à travailler.
 \end{enumerate}
+Cette introduction à Maven est très succincte mais elle vous permettra de démarrer vos projets Java en utilisant pour sa 
+construction un outil qui vous facilitera la vie. Certains IDE n'ont pas une intégration parfaite de Maven, c'est pour 
+cela qu'il est souvent plus pratique de l'utiliser en ligne de commande.
 \end{document}
 
