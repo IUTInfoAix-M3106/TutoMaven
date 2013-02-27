@@ -99,6 +99,7 @@ ressources de l’application, les tests, les membres de l’équipe, la
 structure ... Ce POM se matérialise par un fichier pom.xml à la racine
 du projet. Voici un exemple simple de POM :
 
+```XML
 \<project xmlns="http://maven.apache.org/POM/4.0.0"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -121,7 +122,7 @@ Inutile\</description\> \<url\>http://maven.apache.org\</url\>
 \<dependencies\> \<dependency\> \<groupId\>junit\</groupId\>
 \<artifactId\>junit\</artifactId\> \<version\>4.10\</version\>
 \<scope\>test\</scope\> \</dependency\> \</dependencies\> \</project\>
-
+```
 Bien que très simple, ce POM permet de voir les éléments clés dans la
 définition d’un projet Maven. Chaque élément est décrit par une balise
 XML reconnaissable par l’usage de chevrons (`< >`) comme en HTML. Les
