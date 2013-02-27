@@ -56,65 +56,65 @@ Project Object Model (POM)
 --------------------------
 
 Le modèle objet projet ou POM est le fichier central pour la configuration d’un projet avec Maven. Il contient une description détaillée du projet, avec en particulier des informations concernant le versionnage et la gestion des configurations, les dépendances, les ressources de l’application, les tests, les membres de l’équipe, la structure ... Ce POM se matérialise par un fichier pom.xml à la racine du projet. Voici un exemple simple de POM :
+```XML
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         
+  <modelVersion>4.0.0</modelVersion>
 
-    <project xmlns="http://maven.apache.org/POM/4.0.0" 
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-             
-      <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mycompany.app</groupId>
+  <artifactId>my-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-      <groupId>com.mycompany.app</groupId>
-      <artifactId>my-app</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <packaging>jar</packaging>
+  <name>MSBAI</name>
+  <description>Ma Super Belle Application Inutile</description>
+  <url>http://maven.apache.org</url>
 
-      <name>MSBAI</name>
-      <description>Ma Super Belle Application Inutile</description>
-      <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
 
-      <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-      </properties>
-
-      <dependencies>
-        <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>4.10</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </project>
-
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
+```
 Bien que très simple, ce POM permet de voir les éléments clés dans la définition d’un projet Maven. Chaque élément est décrit par une balise XML reconnaissable par l’usage de chevrons (`< >`) comme en HTML. Les balises indispensables sont les suivantes :
 
-project  
+**project** :  
 Cette balise est la balise de premier niveau dans tous les projets Maven.
 
-modelVersion  
+**modelVersion** :  
 Cette balise permettent de configurer la version de la syntaxe du POM (à ignorer pour le moment). La version du POM change que très rarement mais il faut impérativement préciser la version pour que les futures versions de Maven puissent continuer à gérer correctement le projet.
 
-groupId  
+**groupId** :  
 Cette balise est un identifiant unique pour l’organisation qui a créé le projet. Le `groupId` est l’un des identifiants clés d’un projet, il est généralement construit à partir du nom de domaine de l’organisation responsable du projet. Par exemple `org.apache.maven.plugins` est le `groupId` de tous les plug-ins Maven.
 
-artifactId  
+**artifactId** :  
 Cette balise indique le nom de base unique pour l’artefact principal généré par ce projet. Typiquement en Java cet artefact est un fichier `jar`. Le nom de ce fichier aura la forme suivante `<artifactId>-<version>.<extension>` (`myapp-1.0-SNAPSHOT.jar` pour le projet d’exemple).
 
-version  
+**version** :  
 Cet élément indique la version de l’artefact généré par le projet. Permet d’aider à Maven d’aider le développeur à gérer correctement les versions d’un même projet ainsi que les dépendances.
 
-packaging  
+**packaging** :  
 Indique quel est le type d’archive utilisé pour l’artefact principale (`jar`,`war`,`ear`,...). Par défaut Maven génère un `jar`, il est donc inutile de préciser cette balise pour la majorité des projets.
 
-name  
+**name** :  
 Indique le nom complet du projet. Il est parfois utile dans la documentation générée grâce à Maven.
 
-url  
+**url** :  
 Cette balise indique où est situé le site principal du projet. Comme la précédente cette information sert surtout pour les documents générés par l’outil.
 
-description  
+**description** :  
 Cette balise donne une description sommaire du projet. Encore une fois surtout pour la documentation.
 
 Gestion des dépendances
@@ -131,38 +131,38 @@ Cycle de vie
 
 Par défaut Maven propose une abstraction du cycle de vie standard de la construction d’un projet (appelée en anglais Build Lifecycle). Chaque phase de ce cycle de vie est appelée un but (Goal en anglais). Ces étapes se déroulent dans un ordre déterminée et une étape peut démarrer uniquement si et seulement si les précédentes se sont bien déroulées. Le cycle par défaut est constitué des étapes de construction suivantes :
 
-validate  
+**validate** :  
 Valide que le projet est correct et que toutes les informations nécessaires sont renseignées.
 
-compile  
+**compile** :  
 Compile le code source du projet.
 
-test  
+**test** :  
 Teste le code compilé en utilisant un framework de test unitaire.
 
-package  
+**package** :  
 Prend le code compilé et l’empaquette dans une forme distribuable, typiquement un `jar`.
 
-integration-test  
+**integration-test** :  
 Exécute et déploie si nécessaire le package dans un environnement où les tests d’intégration pourront être lancés.
 
-verify  
+**verify** :  
 Lance tous les outils de validation qui vérifient que le package satisfait les critères de qualité souhaités.
 
-install  
+**install** :  
 Installe le package dans le dépôt local, pour être utilisé localement comme dépendance par un autre projet.
 
-deploy  
+**deploy** :  
 Fait dans l’environnement d’intégration où chez le client, elle copie le package terminé dans un dépôt distant pour être partagé avec d’autres développeurs ou d’autres projets.
 
 Pour lancer toutes les phases de ce cycle de vie, il suffit d’appeler la commande suivante :
-
-    mvn deploy
-
+```sh
+mvn deploy
+```
 Comme l’exécution d’une phase lance aussi toutes les phases qui précèdent, la commande suivante permet d’exécuter le cycle de vie jusqu’à la création du fichier `jar`.
-
-    mvn package
-
+```sh
+mvn package
+```
 En plus du cycle par défaut, Maven propose deux autres étapes : `site` et `clean`. Le premier est fait pour générer la documentation en ligne et le second permet de nettoyer un projet de tout ce qui a été généré par les *"builds"* précédents.
 
 Ressources
@@ -176,56 +176,56 @@ Filtre
 Les ressources n’ont pas pour unique intérêt de séparer clairement les fichiers de configuration pour améliorer l’organisation de nos projet. Même si ce n’est pas une fonctionnalité activée par défaut, le principal atout est de pouvoir réaliser du filtrage sur ces fichiers.
 
 Filtrer les fichiers correspond à remplacer à l’intérieur de tous les fichiers et à chaque compilation tous les `${properties}` par une valeur définie par le système ou le développeur. Ce mécanisme permet donc de paramétrer le projet grâce à des propriétés qui seront remplacées par de vrais valeurs à l’exécution. Pour activer le filtrage sur un répertoire de ressources, il faut ajouter au POM le code suivant :
-
-    <build>
-      <resources>
-        <resource>
-          <directory>src/main/resources</directory>
-          <filtering>true</filtering>
-        </resource>
-      </resources>
-    </build>
-
+```XML
+<build>
+  <resources>
+    <resource>
+      <directory>src/main/resources</directory>
+      <filtering>true</filtering>
+    </resource>
+  </resources>
+</build>
+```
 Maven met à disposition un certain nombre de propriétés comme par exemple `${pom.name}` qui contient le nom du projet ou `${pom.version}` qui correspond à la version. Pour définir des nouvelles propriétés le développeur a deux solutions. La première, la plus simple, est d’ajouter les propriétés à la ligne de commande d’exécution de Maven. Par exemple si l’on souhaite créer une propriété `${bd.motDePasse}` contenant le mot de passe de connexion à la base de données de notre machine de développement, il suffit d’exécuter Maven de la manière suivante :
-
-    mvn package "-Dbd.motDePasse=monmdptoutnul"
-
+```sh
+mvn package "-Dbd.motDePasse=monmdptoutnul"
+```
 La seconde solution pour définir des propriétés est de passer par un fichier dédié (dit fichier *properties*) qui sera utilisé pour le filtrage. Cette méthode est à préférer quand on souhaite définir un plus grand nombre de propriétés. Si l’on utilise un système de gestion de version, il faudra veiller à séparer les filtres communs à tous les développeurs des filtres individuels (comme le mot de passe de la BD de dev). Par convention les fichiers *properties* sont situés dans le répertoire `src/main/filters`. Pour configurer ces fichiers, il faut ajouter au POM le code suivant :
-
-    <build>
-      <filters>
-        <filter>src/main/filters/filter.properties</filter>
-      </filters>
-    </build>
-
+```XML
+<build>
+  <filters>
+    <filter>src/main/filters/filter.properties</filter>
+  </filters>
+</build>
+```
 Le fichier `filter.properties` est un fichier "clé=valeur" classique. Pour notre exemple d’application il pourrait ressembler à cela :
-
-    bd.url=jdbc:oracle:thin:nedjar/nedjar@//allegro.iut.univ-aix.fr:1522/orcl.iut.univ-aix.fr
-    bd.user=onyann
-    bd.password=monmdptoutnul
-    bd.driver=com.mysql.jdbc.Driver
-
+```XML
+bd.url=jdbc:oracle:thin:nedjar/nedjar@//allegro.iut.univ-aix.fr:1522/orcl.iut.univ-aix.fr
+bd.user=onyann
+bd.password=monmdptoutnul
+bd.driver=com.mysql.jdbc.Driver
+```
 Il faut noter que si une propriété est présente dans un fichier *properties* et qu’elle est aussi définie dans la ligne de commande, alors c’est cette dernière qui sera utilisée. Ainsi même si un filtre est par défaut commun à tous il pourra être redéfini localement par un développeur pour faire des essais.
 
 Avec nos filtres d’exemple, le fichier `src/main/resources/META-INF/persistence.xml` ressemblerait à ceci :
-
-    <?xml version="1.0" encoding="UTF-8" ?>
-    <persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0" 
-                 xmlns="http://java.sun.com/xml/ns/persistence">
-      <persistence-unit name="maPU" transaction-type="RESOURCE_LOCAL">
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <properties>
-          <property name="javax.persistence.jdbc.url" value="${bd.url}"/>
-          <property name="javax.persistence.jdbc.user" value="${bd.user}"/>
-          <property name="javax.persistence.jdbc.password" value="${bd.password}"/>
-          <property name="javax.persistence.jdbc.driver" value="${bd.driver}"/>
-          <property name="eclipselink.ddl-generation" value="create-tables"/>
-          <property name="javax.persistence.level" value="SEVERE"/>
-        </properties>
-      </persistence-unit>
-    </persistence>
-
+```XML
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0" 
+             xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="maPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="${bd.url}"/>
+      <property name="javax.persistence.jdbc.user" value="${bd.user}"/>
+      <property name="javax.persistence.jdbc.password" value="${bd.password}"/>
+      <property name="javax.persistence.jdbc.driver" value="${bd.driver}"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="javax.persistence.level" value="SEVERE"/>
+    </properties>
+  </persistence-unit>
+</persistence>
+```
 Mise en place de l’environnement de travail
 ===========================================
 
@@ -244,51 +244,47 @@ Création d’un premier projet
 Avant d’utiliser Maven pour nos projets Java, nous allons voir comment créer un simple projet d’exemple (le helloworld de Maven). Pour créer ce projet, nous allons faire appel au mécanisme d’archétype. Un archétype est défini comme un modèle réutilisable. Dans Maven, un archétype est un template (une trame en français) d’un projet qui est combiné avec des informations entrées par l’utilisateur pour produire un projet Maven qui a été assemblé pour les besoins spécifiques de l’utilisateur. Nous allons voir comment le mécanisme d’archétype fonctionne, pour en savoir plus sur les archétypes, vous pouvez consulter cette page de la documentation officielle : <http://maven.apache.org/guides/introduction/introduction-to-archetypes.html>.
 
 1.  Comme nous voulons que notre projet Maven puisse être importé par Eclipse, nous commençons par nous déplacer dans le workspace.
-
-        cd ~/workspace
-          
-
+    ```sh
+    cd ~/workspace
+    ```          
     Pour éviter de devoir réimporter salement vos projet à chaque début de TP, il est plus qu’intéressant de mettre votre workspace sur une clef USB et de choisir au démarrage d’Eclipse ce workspace là. En plus vous pourrez ainsi travailler de la même façon que ce soit à l’IUT ou chez vous.
 
 2.  Ensuite on créé notre projet avec la ligne de commande suivante :
-
-        mvn archetype:generate -DinteractiveMode=false \
-        -DarchetypeArtifactId=maven-archetype-quickstart \
-        -DgroupId=com.mycompany.app -DartifactId=my-app 
-          
-
+    ```sh
+    mvn archetype:generate -DinteractiveMode=false -DarchetypeArtifactId=maven-archetype-quickstart \
+    -DgroupId=com.mycompany.app -DartifactId=my-app 
+    ```      
     Les paramètres `-DgroupId` et `-DartifactId` permettent de définir convenablement votre projet (voir le paragraphe sur le POM).
 
 3.  Le projet est situé dans un dossier ayant même nom que l’`artifactId`, c’est à dire dans notre exemple "my-app". Ce dossier a la structure suivante :
-
-        my-app/
-        |-- pom.xml
-        `-- src
-            |-- main
-            |   `-- java
-            |       `-- com
-            |           `-- mycompany
-            |               `-- app
-            |                   `-- App.java
-            `-- test
-                `-- java
-                    `-- com
-                        `-- mycompany
-                            `-- app
-                                `-- AppTest.java
-          
+    ```
+    my-app/
+    |-- pom.xml
+    `-- src
+        |-- main
+        |   `-- java
+        |       `-- com
+        |           `-- mycompany
+        |               `-- app
+        |                   `-- App.java
+        `-- test
+            `-- java
+                `-- com
+                    `-- mycompany
+                        `-- app
+                            `-- AppTest.java
+    ```
 
 4.  La compilation de ce projet se fait en exécutant les commandes suivantes[3] :
-
-        cd my-app
-        mvn package
-          
+    ```sh
+    cd my-app
+    mvn package
+    ```      
 
 5.  Pour rendre le projet compatible avec Eclipse il faut exécuter la commande suivante :
-
-        mvn eclipse:eclipse
-          
-
+    ```sh
+    mvn eclipse:eclipse
+    ```       
     Une fois cette commande exécutée, il suffit d’importer le projet à partir d’Eclipse pour pouvoir commencer à travailler.
 
 Cette introduction à Maven est très succincte mais elle vous permettra de démarrer vos projets Java en utilisant pour sa construction un outil qui vous facilitera la vie. Certains IDE n’ont pas une intégration parfaite de Maven, c’est pour cela qu’il est souvent plus pratique de l’utiliser en ligne de commande.
