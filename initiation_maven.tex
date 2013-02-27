@@ -252,14 +252,14 @@ Chaque phase de ce cycle de vie est appelée un but (Goal en anglais). Ces étap
 une étape peut démarrer uniquement si et seulement si les précédentes se sont bien déroulées. Le cycle par défaut est constitué 
 des étapes de construction suivantes :
 \begin{description}
-  \item[validate] - Valide que le projet est correct et que toutes les informations nécessaires sont renseignées.
-  \item[compile] - Compile le code source du projet.
-  \item[test] - Teste le code compilé en utilisant un framework de test unitaire.
-  \item[package] - Prend le code compilé et l'empaquette dans une forme distribuable, typiquement un \texttt{jar}.
-  \item[integration-test] - Exécute et déploie si nécessaire le package dans un environnement où les tests d'intégration pourront être lancés.
-  \item[verify] - Lance tous les outils de validation qui  vérifient que le package satisfait les critères de qualité souhaités.
-  \item[install] - Installe le package dans le dépôt local, pour être utilisé localement comme dépendance par un autre projet.
-  \item[deploy] - Fait dans l'environnement d'intégration où chez le client, elle copie le package terminé dans un dépôt distant 
+  \item[validate] Valide que le projet est correct et que toutes les informations nécessaires sont renseignées.
+  \item[compile] Compile le code source du projet.
+  \item[test] Teste le code compilé en utilisant un framework de test unitaire.
+  \item[package] Prend le code compilé et l'empaquette dans une forme distribuable, typiquement un \texttt{jar}.
+  \item[integration-test] Exécute et déploie si nécessaire le package dans un environnement où les tests d'intégration pourront être lancés.
+  \item[verify] Lance tous les outils de validation qui  vérifient que le package satisfait les critères de qualité souhaités.
+  \item[install] Installe le package dans le dépôt local, pour être utilisé localement comme dépendance par un autre projet.
+  \item[deploy] Fait dans l'environnement d'intégration où chez le client, elle copie le package terminé dans un dépôt distant 
   pour être partagé avec d'autres développeurs ou d'autres projets.
 \end{description}
 Pour lancer toutes les phases de ce cycle de vie, il suffit d'appeler la commande suivante : 

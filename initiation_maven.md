@@ -132,28 +132,28 @@ Cycle de vie
 Par défaut Maven propose une abstraction du cycle de vie standard de la construction d’un projet (appelée en anglais Build Lifecycle). Chaque phase de ce cycle de vie est appelée un but (Goal en anglais). Ces étapes se déroulent dans un ordre déterminée et une étape peut démarrer uniquement si et seulement si les précédentes se sont bien déroulées. Le cycle par défaut est constitué des étapes de construction suivantes :
 
 validate  
-- Valide que le projet est correct et que toutes les informations nécessaires sont renseignées.
+Valide que le projet est correct et que toutes les informations nécessaires sont renseignées.
 
 compile  
-- Compile le code source du projet.
+Compile le code source du projet.
 
 test  
-- Teste le code compilé en utilisant un framework de test unitaire.
+Teste le code compilé en utilisant un framework de test unitaire.
 
 package  
-- Prend le code compilé et l’empaquette dans une forme distribuable, typiquement un `jar`.
+Prend le code compilé et l’empaquette dans une forme distribuable, typiquement un `jar`.
 
 integration-test  
-- Exécute et déploie si nécessaire le package dans un environnement où les tests d’intégration pourront être lancés.
+Exécute et déploie si nécessaire le package dans un environnement où les tests d’intégration pourront être lancés.
 
 verify  
-- Lance tous les outils de validation qui vérifient que le package satisfait les critères de qualité souhaités.
+Lance tous les outils de validation qui vérifient que le package satisfait les critères de qualité souhaités.
 
 install  
-- Installe le package dans le dépôt local, pour être utilisé localement comme dépendance par un autre projet.
+Installe le package dans le dépôt local, pour être utilisé localement comme dépendance par un autre projet.
 
 deploy  
-- Fait dans l’environnement d’intégration où chez le client, elle copie le package terminé dans un dépôt distant pour être partagé avec d’autres développeurs ou d’autres projets.
+Fait dans l’environnement d’intégration où chez le client, elle copie le package terminé dans un dépôt distant pour être partagé avec d’autres développeurs ou d’autres projets.
 
 Pour lancer toutes les phases de ce cycle de vie, il suffit d’appeler la commande suivante :
 
