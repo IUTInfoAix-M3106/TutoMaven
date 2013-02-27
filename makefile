@@ -25,6 +25,6 @@ initial: clean
 	@echo "compilation du tex"
 	rubber -d ${SRC}
 	@echo "compilation en markdown"
-	pandoc -f latex -t ${SRC}.tex -o ${SRC}.md
+	pandoc -f latex -t markdown_github ${SRC}.tex -o ${SRC}.md
 	@echo "Citations ou références indéfinies:"
 	@egrep -i $(UNDEFINED) $*.log || echo "Aucune"

@@ -170,7 +170,7 @@ Le modèle objet projet ou POM est le fichier central pour la configuration d'un
 description détaillée du projet, avec en particulier des informations concernant le versionnage et la gestion des configurations, 
 les dépendances, les ressources de l'application, les tests, les membres de l'équipe, la structure ...
 Ce POM se matérialise par un fichier pom.xml à la racine du projet. Voici un exemple simple de POM :
-\begin{code_xml}
+\begin{lstlisting}[language=XML]
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -201,7 +201,7 @@ Ce POM se matérialise par un fichier pom.xml à la racine du projet. Voici un e
     </dependency>
   </dependencies>
 </project>
-\end{code_xml}
+\end{lstlisting}
 Bien que très simple, ce POM permet de voir les éléments clés dans la définition d'un projet Maven. Chaque élément est 
 décrit par une balise XML reconnaissable par l'usage de chevrons (\texttt{< >}) comme en HTML. 
 Les balises indispensables sont les suivantes :
@@ -263,15 +263,15 @@ des étapes de construction suivantes :
   pour être partagé avec d'autres développeurs ou d'autres projets.
 \end{description}
 Pour lancer toutes les phases de ce cycle de vie, il suffit d'appeler la commande suivante : 
-\begin{code_shell}
+\begin{lstlisting}[language=sh]
 mvn deploy
-\end{code_shell}
+\end{lstlisting}
 
 Comme l'exécution d'une phase lance aussi toutes les phases qui précèdent, la commande suivante permet d'exécuter le cycle 
 de vie jusqu'à la création du fichier \texttt{jar}.
-\begin{code_shell}
+\begin{lstlisting}[language=sh]
 mvn package
-\end{code_shell}
+\end{lstlisting}
 
 En plus du cycle par défaut, Maven propose deux autres étapes : \texttt{site} et \texttt{clean}. Le premier est 
 fait pour générer la documentation en ligne et le second permet de nettoyer un projet de tout ce qui a été généré par les 
@@ -293,7 +293,7 @@ Filtrer les fichiers correspond à remplacer à l'intérieur de tous les fichier
 \texttt{\$\{properties\}} par une valeur définie par le système ou le développeur. Ce mécanisme permet donc de paramétrer 
 le projet grâce à des propriétés qui seront remplacées par de vrais valeurs à l'exécution. Pour activer le filtrage sur un 
 répertoire de ressources, il faut ajouter au POM le code suivant : 
-\begin{code_xml}
+\begin{lstlisting}[language=XML]
 <build>
   <resources>
     <resource>
@@ -302,42 +302,42 @@ répertoire de ressources, il faut ajouter au POM le code suivant :
     </resource>
   </resources>
 </build>
-\end{code_xml}
+\end{lstlisting}
 
 Maven met à disposition un certain nombre de propriétés comme par exemple \texttt{\$\{pom.name\}} qui contient le nom 
 du projet ou \texttt{\$\{pom.version\}} qui correspond à la version. Pour définir des nouvelles propriétés le développeur
 a deux solutions. La première, la plus simple, est d'ajouter les propriétés à la ligne de commande d'exécution de Maven.
 Par exemple si l'on souhaite créer une propriété \texttt{\$\{bd.motDePasse\}} contenant le mot de passe de connexion à 
 la base de données de notre machine de développement, il suffit d'exécuter Maven de la manière suivante :
-\begin{code_shell}
+\begin{lstlisting}[language=sh]
 mvn package "-Dbd.motDePasse=monmdptoutnul"
-\end{code_shell}
+\end{lstlisting}
 La seconde solution pour définir des propriétés est de passer par un fichier dédié (dit fichier \emph{properties}) qui 
 sera utilisé pour le filtrage. Cette méthode est à préférer quand on souhaite définir un plus grand nombre de propriétés.
 Si l'on utilise un système de gestion de version, il faudra veiller à séparer les filtres communs à tous les développeurs 
 des filtres individuels (comme le mot de passe de la BD de dev). Par convention les fichiers \emph{properties} sont situés dans le répertoire 
 \texttt{src/main/filters}. Pour configurer ces fichiers, il faut ajouter au POM le code suivant : 
-\begin{code_xml}
+\begin{lstlisting}[language=XML]
 <build>
   <filters>
     <filter>src/main/filters/filter.properties</filter>
   </filters>
 </build>
-\end{code_xml}
+\end{lstlisting}
 Le fichier \texttt{filter.properties} est un fichier "clé=valeur" classique. Pour notre exemple d'application il 
 pourrait ressembler à cela : 
-\begin{code_xml}
+\begin{lstlisting}[language=XML]
 bd.url=jdbc:oracle:thin:nedjar/nedjar@//allegro.iut.univ-aix.fr:1522/orcl.iut.univ-aix.fr
 bd.user=onyann
 bd.password=monmdptoutnul
 bd.driver=com.mysql.jdbc.Driver
-\end{code_xml}
+\end{lstlisting}
 Il faut noter que si une propriété est présente dans un fichier \emph{properties} et 
 qu'elle est aussi définie dans la ligne de commande, alors c'est cette dernière qui sera utilisée. Ainsi même si un filtre
 est par défaut commun à tous il pourra être redéfini localement par un développeur pour faire des essais.
 
 Avec nos filtres d'exemple, le fichier \texttt{src/main/resources/META-INF/persistence.xml} ressemblerait à ceci :
-\begin{code_xml}
+\begin{lstlisting}[language=XML]
 <?xml version="1.0" encoding="UTF-8" ?>
 <persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0" 
@@ -354,7 +354,7 @@ Avec nos filtres d'exemple, le fichier \texttt{src/main/resources/META-INF/persi
     </properties>
   </persistence-unit>
 </persistence>
-\end{code_xml}
+\end{lstlisting}
 
 \section{Mise en place de l'environnement de travail}
 \subsection{Installation}
@@ -383,23 +383,23 @@ plus sur les archétypes, vous pouvez consulter cette page de la documentation o
 
 \begin{enumerate}
   \item Comme nous voulons que notre projet Maven puisse être importé par Eclipse, nous commençons par nous déplacer dans le workspace.
-  \begin{code_shell}
+  \begin{lstlisting}[language=sh]
 cd ~/workspace
-  \end{code_shell}
+  \end{lstlisting}
   Pour éviter de devoir réimporter salement vos projet à chaque début de TP, il est plus qu'intéressant de mettre votre workspace 
   sur une clef USB et de choisir au démarrage d'Eclipse ce workspace là. En plus vous pourrez ainsi travailler de la même 
   façon que ce soit à l'IUT ou chez vous.
   \item Ensuite on créé notre projet avec la ligne de commande suivante :
-  \begin{code_shell}
+  \begin{lstlisting}[language=sh]
 mvn archetype:generate -DinteractiveMode=false \
 -DarchetypeArtifactId=maven-archetype-quickstart \
 -DgroupId=com.mycompany.app -DartifactId=my-app 
-  \end{code_shell}
+  \end{lstlisting}
   Les paramètres \texttt{-DgroupId} et \texttt{-DartifactId} permettent de définir convenablement votre projet (voir le paragraphe sur le POM).
   
   \item Le projet est situé dans un dossier ayant même nom que l'\texttt{artifactId}, c'est à dire dans notre exemple "my-app". 
   Ce dossier a la structure suivante :
-  \begin{code_shell}
+  \begin{lstlisting}[language=sh]
 my-app/
 |-- pom.xml
 `-- src
@@ -415,17 +415,17 @@ my-app/
                 `-- mycompany
                     `-- app
                         `-- AppTest.java
-  \end{code_shell}
+  \end{lstlisting}
   \item La compilation de ce projet se fait en exécutant les commandes suivantes\footnote{Attention généralement le 
   premier lancement de Maven est très long car il va récupérer tout ce dont il a besoin par le réseau} :
-  \begin{code_shell}
+  \begin{lstlisting}[language=sh]
 cd my-app
 mvn package
-  \end{code_shell}
+  \end{lstlisting}
   \item Pour rendre le projet compatible avec Eclipse il faut exécuter la commande suivante : 
-  \begin{code_shell}
+  \begin{lstlisting}[language=sh]
 mvn eclipse:eclipse
-  \end{code_shell}
+  \end{lstlisting}
   Une fois cette commande exécutée, il suffit d'importer le projet à partir d'Eclipse pour pouvoir commencer à travailler.
 \end{enumerate}
 Cette introduction à Maven est très succincte mais elle vous permettra de démarrer vos projets Java en utilisant pour sa 
