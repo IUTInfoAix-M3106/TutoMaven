@@ -285,11 +285,7 @@ Avant d’utiliser Maven pour nos projets Java, nous allons voir comment créer 
     mvn package
     ```      
 
-5.  Pour rendre le projet compatible avec Eclipse il faut exécuter la commande suivante :
-    ```sh
-    mvn eclipse:eclipse
-    ```       
-    Une fois cette commande exécutée, il suffit d’importer le projet à partir d’Eclipse pour pouvoir commencer à travailler.
+5.  Pour utiliser votre projet avec Eclipse, il suffit de l’importer comme un "Existing Maven Project".  Une fois cette étape accomplie, vous pourrez commencer à travailler comme à votre habitude.
 
 Cette introduction à Maven est très succincte mais elle vous permettra de démarrer vos projets Java en utilisant pour sa construction un outil qui vous facilitera la vie. Certains IDE n’ont pas une intégration parfaite de Maven, c’est pour cela qu’il est souvent plus pratique de l’utiliser en ligne de commande.
 
@@ -297,4 +293,4 @@ Cette introduction à Maven est très succincte mais elle vous permettra de dém
 
 [2] Un développeur n’ayant pas un Unix sur sa machine ne peut pas être raisonnablement considéré comme un vrai développeur.
 
-[3] Attention généralement le premier lancement de Maven est très long car il va récupérer tout ce dont il a besoin par le réseau
+[3] Attention généralement le premier lancement de Maven est très long car il va récupérer tout ce dont il a besoin par le réseau (c'est à dire à peu près la motié d'Internet).
