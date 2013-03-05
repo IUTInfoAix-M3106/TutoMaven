@@ -238,6 +238,10 @@ La version d’eclipse présente sur les machines du département est la derniè
 
 Pour éviter d’utiliser plusieurs versions de Maven pour le même projet, il faut aller dans le menu `Window->Preferences` puis dans la partie `Maven->Installation`. Une fois dans cette fenêtre, il faudra cliquer sur le bouton `Add` et indiquer le répertoire `/usr/share/maven2/`.
 
+Sur les machines de l'IUT, pour que Maven fonctionne correctement, créez un dossier `.m2` dans votre répertoire `net-home' :
+```sh
+mkdir ~/net-home/.m2
+```
 Création d’un premier projet
 ----------------------------
 
