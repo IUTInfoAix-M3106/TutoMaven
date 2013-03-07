@@ -200,7 +200,7 @@ La seconde solution pour définir des propriétés est de passer par un fichier 
 ```
 Le fichier `filter.properties` est un fichier "clé=valeur" classique. Pour notre exemple d’application il pourrait ressembler à cela :
 ```XML
-bd.url=jdbc:oracle:thin:nedjar/nedjar@//allegro.iut.univ-aix.fr:1522/orcl.iut.univ-aix.fr
+bd.url=jdbc:mysql://localhost:3306/MaBDdeProd
 bd.user=onyann
 bd.password=monmdptoutnul
 bd.driver=com.mysql.jdbc.Driver
