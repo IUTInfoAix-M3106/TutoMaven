@@ -74,8 +74,8 @@ Le modèle objet projet ou POM est le fichier central pour la configuration d’
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -266,8 +266,7 @@ Avant d’utiliser Maven pour nos projets Java, nous allons voir comment créer 
 
 2.  Ensuite on créé notre projet avec la ligne de commande suivante :
     ```sh
-    mvn archetype:generate -DinteractiveMode=false -DarchetypeArtifactId=maven-archetype-quickstart \
-    -DgroupId=com.mycompany.app -DartifactId=my-app 
+    mvn archetype:generate -DinteractiveMode=false -DarchetypeArtifactId=maven-archetype-quickstart -DgroupId=com.mycompany.app -DartifactId=my-app 
     ```      
     Les paramètres `-DgroupId` et `-DartifactId` permettent de définir convenablement votre projet (voir le paragraphe sur le POM).
 
