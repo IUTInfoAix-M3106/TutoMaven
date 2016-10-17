@@ -85,6 +85,12 @@ Le modèle objet projet ou POM est le fichier central pour la configuration d’
       <version>4.10</version>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.40</version>
+    </dependency>
   </dependencies>
 </project>
 ```
