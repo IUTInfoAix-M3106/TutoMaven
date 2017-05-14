@@ -1,7 +1,7 @@
 Introduction
 ============
 
-L’objectif de ce document est de vous présenter rapidement l’outil de référence pour la gestion et l’automatisation de production des projets logiciels Java : Maven. Au premier abord, Maven semble avoir le même objectif que `Make` sous Unix : la production d’un logiciel à partir de ses sources. Maven est bien plus puissant que cela, par ses possibilités avancés, il est souvent utilisé comme une brique de base pour l’intégration continue et les forges logicielles[1]. Contrairement à ses prédécesseurs, il a une approche moins descriptive de la construction d’un logiciel. Parmi les tâches qu’il aide à automatiser il y a :
+L’objectif de ce document est de vous présenter rapidement l’outil de référence pour la gestion et l’automatisation de production des projets logiciels Java : Maven. Au premier abord, Maven semble avoir le même objectif que `Make` sous Unix : la production d’un logiciel à partir de ses sources. Maven est bien plus puissant que cela, par ses possibilités avancés, il est souvent utilisé comme une brique de base pour l’intégration continue et les forges logicielles[\[1\]](#ref1). Contrairement à ses prédécesseurs, il a une approche moins descriptive de la construction d’un logiciel. Parmi les tâches qu’il aide à automatiser il y a :
 
 -   Constructions
 
@@ -238,7 +238,7 @@ Mise en place de l’environnement de travail
 Installation
 ------------
 
-Sur les machines du département la version 2.2.1 de Maven est déjà installée, donc pour cette étape il n’y a rien à faire. Si vous utilisez votre propre machine, vous pouvez soit installer la version présente dans les dépôts de votre distribution[2] où vous pouvez aussi l’installer manuellement en suivant les instructions de la page officielle : <http://maven.apache.org/download.html>.
+Sur les machines du département la version 2.2.1 de Maven est déjà installée, donc pour cette étape il n’y a rien à faire. Si vous utilisez votre propre machine, vous pouvez soit installer la version présente dans les dépôts de votre distribution[\[2\]](#ref2) où vous pouvez aussi l’installer manuellement en suivant les instructions de la page officielle : <http://maven.apache.org/download.html>.
 
 La version d’eclipse présente sur les machines du département est la dernière disponible. Pour la récupérer pour chez vous, allez sur la page <http://www.eclipse.org/downloads/> puis téléchargez "Eclipse IDE for Java Developers" version linux. Cette version contient par défaut les plugin Maven, Git et Junit. Elle vous simplifiera donc bien la vie pour vos projets à réaliser en Java d’ici la fin du S4.
 
@@ -295,7 +295,7 @@ Avant d’utiliser Maven pour nos projets Java, nous allons voir comment créer 
                             `-- AppTest.java
     ```
 
-4.  La compilation de ce projet se fait en exécutant les commandes suivantes[3] :
+4.  La compilation de ce projet se fait en exécutant les commandes suivantes[\[3\]](#ref3) :
     ```sh
     cd my-app
     mvn package
@@ -305,8 +305,8 @@ Avant d’utiliser Maven pour nos projets Java, nous allons voir comment créer 
 
 Cette introduction à Maven est très succincte mais elle vous permettra de démarrer vos projets Java en utilisant pour sa construction un outil qui vous facilitera la vie. Certains IDE n’ont pas une intégration parfaite de Maven, c’est pour cela qu’il est souvent plus pratique de l’utiliser en ligne de commande.
 
-[1] <http://fr.wikipedia.org/wiki/Forge_%28informatique%29>
+<a name="ref1"></a> [1] <http://fr.wikipedia.org/wiki/Forge_%28informatique%29>
 
-[2] Un développeur n’ayant pas un Unix sur sa machine ne peut pas être raisonnablement considéré comme un vrai développeur.
+<a name="ref2"></a> [2] Un développeur n’ayant pas un Unix sur sa machine ne peut pas être raisonnablement considéré comme un vrai développeur.
 
-[3] Attention généralement le premier lancement de Maven est très long car il va récupérer tout ce dont il a besoin par le réseau (c'est à dire à peu près la motié d'Internet).
+<a name="ref3"></a> [3] Attention généralement le premier lancement de Maven est très long car il va récupérer tout ce dont il a besoin par le réseau (c'est à dire à peu près la motié d'Internet).
